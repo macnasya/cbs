@@ -1,0 +1,29 @@
+{
+  "name": "cbs",
+  "version": "0.1.0",
+  "private": true,
+  "devDependencies": {
+    "babel-preset-react-native-stage-0": "^1.0.1",
+    "jest": "^23.4.2",
+    "jest-react-native": "^18.0.0",
+    "react-test-renderer": "16.3.1"
+  },
+  "scripts": {
+    "start": "react-native start --port=8088",
+    "emulator": "export ANDROID_SDK=$HOME/Library/Android/sdk && export PATH=$ANDROID_SDK/emulator:$ANDROID_SDK/tools:$PATH && emulator @Nexus_5x_API_28_x86",
+    "android": "adb -s emulator-5554 reverse tcp:8081 tcp:8088 && react-native run-android",
+    "android-dev": "concurrently --allow-restart --restart-after 2000 --restart-tries 5 \"npm run emulator\" \"npm run android\"",
+    "ios": "react-native run-ios",
+    "test": "jest"
+  },
+  "jest": {
+    "preset": "react-native"
+  },
+  "dependencies": {
+    "@expo/vector-icons": "^6.3.1",
+    "concurrently": "^3.6.1",
+    "native-base": "^2.7.2",
+    "react": "16.3.1",
+    "react-native": "~0.55.2"
+  }
+}
