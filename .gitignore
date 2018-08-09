@@ -4,6 +4,7 @@
 .expo/
 
 #builds
+/ios/build
 /android/app/build
 /android/.gradle
 
