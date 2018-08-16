@@ -6,6 +6,8 @@
     "babel-preset-react-native-stage-0": "^1.0.1",
     "jest": "^23.4.2",
     "jest-react-native": "^18.0.0",
+    "enzyme": "^3.2.0",
+    "enzyme-adapter-react-16": "^1.1.1",
     "react-test-renderer": "16.3.1"
   },
   "scripts": {
@@ -17,14 +19,22 @@
     "test": "jest"
   },
   "jest": {
-    "preset": "react-native"
+    "preset": "react-native",
+    "transformIgnorePatterns": [
+      "node_modules/(?!(jest-)?react-native|react-navigation)"
+    ]
   },
   "dependencies": {
-    "@expo/vector-icons": "^6.3.1",
+    "axios": "^0.18.0",
     "concurrently": "^3.6.1",
     "native-base": "^2.7.2",
     "react": "16.3.1",
     "react-native": "~0.55.2",
-    "react-native-navigation": "^2.0.2464"
+    "react-native-vector-icons": "^5.0.0",
+    "react-navigation": "^2.11.2",
+    "react-redux": "^5.0.7",
+    "redux": "^4.0.0",
+    "redux-form": "^7.4.2",
+    "redux-thunk": "^2.3.0"
   }
 }
