@@ -5,6 +5,7 @@
 
 #builds
 /ios/build
+/android/build
 /android/app/build
 /android/.gradle
 
@@ -20,4 +21,3 @@
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
-android/build/intermediates/dex-cache/cache.xml
