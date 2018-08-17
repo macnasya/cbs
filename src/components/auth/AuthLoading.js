@@ -16,7 +16,7 @@ export class AuthLoadingScreen extends React.Component {
   };
 
   componentWillUpdate () {
-    this.props.navigation.navigate(this.props.user.loggedIn ? 'User' : 'App')
+    this.props.navigation.navigate(this.props.user.loggedIn ? 'User' : 'Public')
   }
 
   render() {

@@ -14,7 +14,7 @@ const AuthStack = createStackNavigator(
     initialRouteName: 'Login',
     headerMode: "none",
   })
-const AppDrawer = createDrawerNavigator(
+const PublicDrawer = createDrawerNavigator(
   {
     Home: {
       screen: HomeScreen
@@ -48,7 +48,7 @@ const UserStack = createDrawerNavigator(
 export default navigationRoot = createSwitchNavigator(
   {
     AuthLoading: AuthLoadingScreen,
-    App: AppDrawer,
+    Public: PublicDrawer,
     User: UserStack,
   },
   {
