@@ -4,11 +4,10 @@ import HomeScreen from '../components/public/HomeScreen'
 import AboutScreen from '../components/public/AboutScreen'
 import UserHomeScreen from '../components/user/UserHomeScreen'
 import SideBar from '../components/common/SideBar'
-import { SignupScreen, AuthLoadingScreen, LoginScreen, Logout } from '../components/auth'
+import { AuthLoadingScreen, LoginScreen, Logout } from '../components/auth'
 const AuthStack = createStackNavigator(
   {
-    Login: LoginScreen, 
-    SignUp: SignupScreen
+    Login: LoginScreen
   },
   {
     initialRouteName: 'Login',

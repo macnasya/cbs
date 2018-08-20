@@ -1,11 +1,14 @@
 import { AsyncStorage } from 'react-native'
 import { actionTypes } from './index'
+import Auth0 from 'react-native-auth0';
+const auth0 = new Auth0({ domain: 'cbs.auth0.com', clientId: 'cTeCslmL_jnmf6JBM7_vmXQ5eKGlMBhe' });
 import axios from 'axios';
 
-export function setAuth (userToken) {
+export function setAuth (data) {
   return {
     type: actionTypes.SET_AUTH,
-    userToken
+    token: data.token,
+    profile: data.profile
   }
 }
 
@@ -17,11 +20,36 @@ export function setLogout () {
 
 export const checkAuth = () => async (dispatch) => {
   const userToken = await AsyncStorage.getItem('userToken');
-  dispatch(setAuth(userToken))
+  dispatch(userToken ? loadUserProfile(userToken) : logout())
 }
 
-export const logout = (callback) => async (dispatch) => {
+export const setUserData = (data) => async (dispatch) => {
+  await AsyncStorage.setItem('userToken', data.token);
+  dispatch(setAuth(data))
+}
+
+export const logout = (callback = () => {}) => async (dispatch) => {
   await AsyncStorage.removeItem('userToken');
   dispatch(setLogout())
   callback()
 }
+
+export const login = (callback) => async (dispatch) => {
+  auth0
+    .webAuth
+    .authorize({scope: 'openid profile email', audience: 'https://cbs.auth0.com/userinfo'})
+    .then(credentials => {
+      dispatch(loadUserProfile(credentials.accessToken, callback))
+    })
+    .catch(error => console.log(error));
+}
+
+export const loadUserProfile = (accessToken, callback = () => {}) => async (dispatch) => {
+  let response = await axios.get('https://cbs.auth0.com/userinfo?access_token=' + accessToken, {
+    params: {
+      _: (new Date).getTime()
+    }
+  });
+  dispatch(setUserData({profile: response.data, token: accessToken}))
+  callback(response.data)
+};

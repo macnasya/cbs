@@ -13,7 +13,6 @@ class SideBar extends React.Component {
     super(props);
   }
   render() {
-    console.log(this.props.navigation.state.routes)
     return (
       <Container>
         <Content

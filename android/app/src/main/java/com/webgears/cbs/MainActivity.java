@@ -1,4 +1,4 @@
-package com.cbs;
+package com.webgears.cbs;
 
 import com.facebook.react.ReactActivity;
 

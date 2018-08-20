@@ -1,6 +1,7 @@
 import { 
   checkAuth,
-  logout
+  logout,
+  login
 } from './authActions'
 
 const  actionTypes = {
@@ -13,4 +14,5 @@ export {
 
   checkAuth,
   logout,
+  login
 }

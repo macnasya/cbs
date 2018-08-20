@@ -1,36 +1,24 @@
 import React from 'react';
 import styles from '../styles'
 import { AsyncStorage } from 'react-native';
+import { connect } from 'react-redux'
+import { login } from '../../actions'
 import { Container, Text, Button, Content } from 'native-base';
 import AuthHeader from './AuthHeader'
-
-export default class LoginScreen extends React.Component {
-  static navigationOptions = {
-    title: 'Please sign in',
-  };
+class LoginScreen extends React.Component {
+  componentDidMount () {
+    this._signInAsync()
+  }
 
   render() {
-    return (
-      <Container style={styles.container}>
-        <AuthHeader {...this.props} title="Login" />
-        <Content>
-          <Button onPress={this._signInAsync}>
-            <Text>Login</Text>
-          </Button>
-          <Text>Or</Text>
-          <Button onPress={this._singUp}>
-            <Text>Sign up</Text>
-          </Button>
-        </Content>
-      </Container>
-    );
+    return null
   }
 
-  _singUp = () => {
-    this.props.navigation.navigate('SignUp')
-  }
-  _signInAsync = async () => {
-    await AsyncStorage.setItem('userToken', 'abc');
-    this.props.navigation.navigate('User');
+  _signInAsync = () => {
+    this.props.login(() => {
+      this.props.navigation.navigate('User');
+    })
   };
 }
+
+export default connect(() => ({}), {login})(LoginScreen)
