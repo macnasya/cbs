@@ -12,7 +12,9 @@ export const user = (state = defaultState, action) => {
       profile: action.profile
     }
     case actionTypes.LOGOUT: return {
-      loggedIn: false
+      loggedIn: false,
+      token: null,
+      profile: {}
     }
     default: return state;
   }
