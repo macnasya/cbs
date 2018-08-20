@@ -42,7 +42,7 @@ export const login = (callback) => async (dispatch) => {
     .then(credentials => {
       dispatch(loadUserProfile(credentials.accessToken, callback))
     })
-    .catch(error => console.log(error));
+    .catch(error => callback(error));
 }
 
 export const loadUserProfile = (accessToken, callback = () => {}) => async (dispatch) => {

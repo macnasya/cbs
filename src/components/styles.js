@@ -5,5 +5,8 @@ const { StyleSheet } = React;
 export default {
   container: {
     backgroundColor: "#FFF"
+  },
+  centered: {
+    textAlign: 'center'
   }
 };
