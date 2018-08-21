@@ -6,7 +6,8 @@ import {
 
 const  actionTypes = {
   SET_AUTH: 'SET_AUTH',
-  LOGOUT: 'LOGOUT'
+  LOGOUT: 'LOGOUT',
+  LOGGININ: 'LOGGININ'
 }
 
 export {

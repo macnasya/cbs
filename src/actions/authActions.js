@@ -19,7 +19,14 @@ export function setLogout () {
   }
 }
 
+export function setLogingIn () {
+  return {
+    type: actionTypes.LOGGININ
+  }
+}
+
 export const checkAuth = () => async (dispatch) => {
+  dispatch(setLogingIn())
   const userToken = await AsyncStorage.getItem('userToken');
   dispatch(userToken ? loadUserProfile(userToken) : logout())
 }

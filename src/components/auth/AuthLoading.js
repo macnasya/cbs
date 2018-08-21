@@ -1,14 +1,14 @@
 import React from 'react'
 import styles from '../styles'
 import { connect } from 'react-redux'
-import { ActivityIndicator, StatusBar } from 'react-native'
-import { Container } from 'native-base';
+import { StatusBar } from 'react-native'
+import { Container, Spinner } from 'native-base';
 import { checkAuth } from '../../actions'
 
 export class AuthLoadingScreen extends React.Component {
   constructor(props) {
-    super(props);
-    this._getAuthToken();
+    super(props)
+    this._getAuthToken()
   }
 
   _getAuthToken = async () => {
@@ -16,13 +16,15 @@ export class AuthLoadingScreen extends React.Component {
   };
 
   componentDidUpdate () {
-    this.props.navigation.navigate(this.props.user.loggedIn ? 'User' : 'Public')
+    if(!this.props.user.logginIn){
+      this.props.navigation.navigate(this.props.user.loggedIn ? 'User' : 'Public')
+    }
   }
 
   render() {
     return (
       <Container style={styles.container}>
-        <ActivityIndicator />
+        <Spinner color="blue" />
         <StatusBar barStyle="default" />
       </Container>
     );

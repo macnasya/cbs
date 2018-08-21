@@ -2,7 +2,7 @@ import React from 'react'
 import { createSwitchNavigator, createStackNavigator, createDrawerNavigator } from 'react-navigation'
 import HomeScreen from '../components/public/HomeScreen'
 import AboutScreen from '../components/public/AboutScreen'
-import UserHomeScreen from '../components/user/UserHomeScreen'
+import UserDashboard from '../components/user/UserDashboard'
 import SideBar from '../components/common/SideBar'
 import { AuthLoadingScreen, LoginScreen, Logout } from '../components/auth'
 const AuthStack = createStackNavigator(
@@ -32,15 +32,15 @@ const PublicDrawer = createDrawerNavigator(
 )
 const UserStack = createDrawerNavigator(
   {
-    UserHome: {
-      screen: UserHomeScreen
+    Dashboard: {
+      screen: UserDashboard
     },
     Logout: {
       screen: Logout
     }
   },
   {
-    initialRouteName: 'UserHome',
+    initialRouteName: 'Dashboard',
     contentComponent: props => <SideBar {...props} />
   })
 
