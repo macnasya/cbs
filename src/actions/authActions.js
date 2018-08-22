@@ -45,7 +45,7 @@ export const logout = (callback = () => {}) => async (dispatch) => {
 export const login = (callback) => async (dispatch) => {
   auth0
     .webAuth
-    .authorize({scope: 'openid profile email', audience: `https://${auth0Config.domain}/userinfo`})
+    .authorize({scope: 'openid profile read:profile write:profile', audience: `https://${auth0Config.domain}/userinfo`})
     .then(credentials => {
       dispatch(loadUserProfile(credentials.accessToken, callback))
     })
