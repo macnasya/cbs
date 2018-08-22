@@ -14,7 +14,7 @@
   "scripts": {
     "start": "react-native start --port=8088",
     "emulator": "export ANDROID_SDK=$HOME/Library/Android/sdk && export PATH=$ANDROID_SDK/emulator:$ANDROID_SDK/tools:$PATH && emulator @Nexus_5x_API_28_x86",
-    "android": "adb -s emulator-5554 reverse tcp:8081 tcp:8088 && react-native run-android",
+    "android": "adb -s emulator-5554 reverse tcp:8081 tcp:8088 && adb -s emulator-5554 reverse tcp:3456 tcp:3456 && react-native run-android",
     "android-dev": "concurrently --allow-restart --restart-after 2000 --restart-tries 5 \"npm run emulator\" \"npm run android\"",
     "ios": "react-native run-ios",
     "test": "jest"

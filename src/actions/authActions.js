@@ -1,5 +1,5 @@
 import { AsyncStorage } from 'react-native'
-import { actionTypes } from './index'
+import { actionTypes, API_URL } from './index'
 import Auth0 from 'react-native-auth0';
 const auth0Config = { domain: 'cbs.auth0.com', clientId: 'cTeCslmL_jnmf6JBM7_vmXQ5eKGlMBhe' }
 const auth0 = new Auth0(auth0Config);
@@ -45,8 +45,9 @@ export const logout = (callback = () => {}) => async (dispatch) => {
 export const login = (callback) => async (dispatch) => {
   auth0
     .webAuth
-    .authorize({scope: 'openid profile read:profile write:profile', audience: `https://${auth0Config.domain}/userinfo`})
+    .authorize({scope: 'openid profile read:profile write:profile', audience: `${API_URL}`})
     .then(credentials => {
+      console.log(credentials.accessToken)
       dispatch(loadUserProfile(credentials.accessToken, callback))
     })
     .catch(error => callback(error));
@@ -58,6 +59,12 @@ export const loadUserProfile = (accessToken, callback = () => {}) => async (disp
       _: (new Date).getTime()
     }
   });
+
+  const headers = { 'Authorization': `Bearer ${accessToken}`}
+    axios.get(`${API_URL}/api/private`, { headers })
+      .then(response => console.log(response.data.message))
+      .catch(error => console.log(error));
+
   dispatch(setUserData({profile: response.data, token: accessToken}))
   callback(response.data)
 };
