@@ -5,7 +5,7 @@ import {
 } from './authActions'
 
 const  actionTypes = {
-  SET_AUTH: 'SET_AUTH',
+  SET_PROFILE: 'SET_PROFILE',
   LOGOUT: 'LOGOUT',
   LOGGININ: 'LOGGININ'
 }

@@ -7,7 +7,7 @@ const defaultState = {
 
 export const user = (state = defaultState, action) => {
   switch (action.type) {
-    case actionTypes.SET_AUTH: return {
+    case actionTypes.SET_PROFILE: return {
       loggedIn: action.token ? true : false,
       logginIn: false,
       token: action.token,

@@ -1,15 +1,13 @@
-import { AsyncStorage } from 'react-native'
+import { AsyncStorage, Platform } from 'react-native'
 import { actionTypes, API_URL } from './index'
 import Auth0 from 'react-native-auth0';
 const auth0Config = { domain: 'cbs.auth0.com', clientId: 'cTeCslmL_jnmf6JBM7_vmXQ5eKGlMBhe' }
 const auth0 = new Auth0(auth0Config);
 import axios from 'axios';
 
-export function setAuth (data) {
-  return {
-    type: actionTypes.SET_AUTH,
-    token: data.token,
-    profile: data.profile
+export function setUserProfile (data) {
+  return {...data,
+    type: actionTypes.SET_PROFILE
   }
 }
 
@@ -26,45 +24,51 @@ export function setLogingIn () {
 }
 
 export const checkAuth = () => async (dispatch) => {
-  dispatch(setLogingIn())
   const userToken = await AsyncStorage.getItem('userToken');
-  dispatch(userToken ? loadUserProfile(userToken) : logout())
+  dispatch(userToken ? loadUserProfile(JSON.parse(userToken)) : logout())
+  dispatch(setLogingIn())
 }
 
-export const setUserData = (data) => async (dispatch) => {
-  await AsyncStorage.setItem('userToken', data.token);
-  dispatch(setAuth(data))
+export const logout = (callback = () => {}) => (dispatch) => {
+  if (Platform.OS === 'android') {
+    AsyncStorage.removeItem('userToken');
+    dispatch(setLogout())
+    callback()
+  } else {
+    auth0.webAuth
+      .clearSession({})
+      .then(async success => {
+        await AsyncStorage.removeItem('userToken');
+        dispatch(setLogout())
+        callback()
+      })
+      .catch(error => console.log(error));
+  }
 }
 
-export const logout = (callback = () => {}) => async (dispatch) => {
-  await AsyncStorage.removeItem('userToken');
-  dispatch(setLogout())
-  callback()
-}
-
-export const login = (callback) => async (dispatch) => {
+export const login = (callback) => (dispatch) => {
+  const authOptions = {
+    scope: 'openid profile email read:profile write:profile', 
+    audience: `${API_URL}`
+  }
   auth0
     .webAuth
-    .authorize({scope: 'openid profile read:profile write:profile', audience: `${API_URL}`})
+    .authorize(authOptions)
     .then(credentials => {
-      console.log(credentials.accessToken)
-      dispatch(loadUserProfile(credentials.accessToken, callback))
+      console.log(credentials)
+      AsyncStorage.setItem('userToken', JSON.stringify({accessToken: credentials.accessToken, scope: credentials.scope}));
+      dispatch(loadUserProfile(credentials, callback))
     })
     .catch(error => callback(error));
 }
 
-export const loadUserProfile = (accessToken, callback = () => {}) => async (dispatch) => {
-  let response = await axios.get(`https://${auth0Config.domain}/userinfo?access_token=${accessToken}`, {
-    params: {
-      _: (new Date).getTime()
-    }
-  });
+export const loadUserProfile = (credentials, callback = () => {}) => (dispatch) => {
+  const headers = { 'Authorization': `Bearer ${credentials.accessToken}`}
+  axios.get(`${API_URL}/api/user/profile`, { headers })
+    .then(response => {
+      dispatch(setUserProfile({profile: response.data, token: credentials.accessToken, scope: credentials.scope.split(' ')}))
+      callback(response.data)
+    })
+    .catch(error => console.log(error));
 
-  const headers = { 'Authorization': `Bearer ${accessToken}`}
-    axios.get(`${API_URL}/api/private`, { headers })
-      .then(response => console.log(response.data.message))
-      .catch(error => console.log(error));
-
-  dispatch(setUserData({profile: response.data, token: accessToken}))
-  callback(response.data)
 };
