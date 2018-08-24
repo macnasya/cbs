@@ -43,16 +43,6 @@ exports.init = (app, port) => {
       credentialsRequired: true,
       jwksUri: `https://cbs.auth0.com/.well-known/jwks.json`
     }),
-
-    getToken: function fromHeaderOrQuerystring (req) {
-      if (req.headers.authorization && req.headers.authorization.split(' ')[0] === 'Bearer') {
-          return req.headers.authorization.split(' ')[1];
-      } else if (req.query && req.query.token) {
-        return req.query.token;
-      }
-      return null;
-    },  
-
     // Validate the audience and the issuer.
     audience: `http://localhost:${port}`,
     params: {scope: 'email'},
