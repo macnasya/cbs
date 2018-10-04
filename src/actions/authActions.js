@@ -1,9 +1,8 @@
+import firebase from 'react-native-firebase';
+import { GoogleSignin, GoogleSigninButton, statusCodes } from 'react-native-google-signin';
 import { AsyncStorage, Platform } from 'react-native'
 import { actionTypes, API_URL } from './index'
-import Auth0 from 'react-native-auth0';
-const auth0Config = { domain: 'cbs.auth0.com', clientId: 'cTeCslmL_jnmf6JBM7_vmXQ5eKGlMBhe' }
-const auth0 = new Auth0(auth0Config);
-import axios from 'axios';
+GoogleSignin.configure();
 
 export function setUserProfile (data) {
   return {...data,
@@ -24,51 +23,59 @@ export function setLogingIn () {
 }
 
 export const checkAuth = () => async (dispatch) => {
-  const userToken = await AsyncStorage.getItem('userToken');
-  dispatch(userToken ? loadUserProfile(JSON.parse(userToken)) : logout())
   dispatch(setLogingIn())
-}
-
-export const logout = (callback = () => {}) => (dispatch) => {
-  if (Platform.OS === 'android') {
-    AsyncStorage.removeItem('userToken');
-    dispatch(setLogout())
-    callback()
-  } else {
-    auth0.webAuth
-      .clearSession({})
-      .then(async success => {
-        await AsyncStorage.removeItem('userToken');
-        dispatch(setLogout())
-        callback()
-      })
-      .catch(error => console.log(error));
+  firebase.auth().onAuthStateChanged((user) => {
+    dispatch(setUserProfile({profile: user}))
+  });
+  const isSignedIn = await GoogleSignin.isSignedIn();
+  if( isSignedIn ){
+    try {
+      const userInfo = await GoogleSignin.signInSilently();
+      const credential = firebase.auth.GoogleAuthProvider.credential(userInfo.idToken, userInfo.accessToken);
+        // Login with the credential
+      firebase.auth().signInWithCredential(credential);
+    } catch (error) {
+      if (error.code === statusCodes.SIGN_IN_REQUIRED) {
+        // logout()
+      } else {
+        // some other error
+      }
+    }
   }
 }
 
-export const login = (callback) => (dispatch) => {
-  const authOptions = {
-    scope: 'openid profile email read:profile write:profile', 
-    audience: `${API_URL}`
+export const logout = (callback = () => {}) => async (dispatch) => {
+  try {
+    // await GoogleSignin.revokeAccess();
+    await GoogleSignin.signOut();
+    firebase.auth().signOut().then(function() {
+      dispatch(setLogout())
+      callback()
+    }).catch(function(error) {
+      console.error(error);
+    });
+  } catch (error) {
+    console.error(error);
   }
-  auth0
-    .webAuth
-    .authorize(authOptions)
-    .then(credentials => {
-      console.log(credentials)
-      AsyncStorage.setItem('userToken', JSON.stringify({accessToken: credentials.accessToken, scope: credentials.scope}));
-      dispatch(loadUserProfile(credentials, callback))
-    })
-    .catch(error => callback(error));
 }
 
-export const loadUserProfile = (credentials, callback = () => {}) => (dispatch) => {
-  const headers = { 'Authorization': `Bearer ${credentials.accessToken}`}
-  axios.get(`${API_URL}/api/user/profile`, { headers })
-    .then(response => {
-      dispatch(setUserProfile({profile: response.data, token: credentials.accessToken, scope: credentials.scope.split(' ')}))
-      callback(response.data)
-    })
-    .catch(error => console.log(error));
-
-};
+export const login = (callback) => async (dispatch) => {
+  try {
+    await GoogleSignin.hasPlayServices();
+    const userInfo = await GoogleSignin.signIn();
+    const credential = firebase.auth.GoogleAuthProvider.credential(userInfo.idToken, userInfo.accessToken);
+      // Login with the credential
+    firebase.auth().signInWithCredential(credential).then(response => callback(response));
+  } catch (error) {
+    if (error.code === statusCodes.SIGN_IN_CANCELLED) {
+      // user cancelled the login flow
+    } else if (error.code === statusCodes.IN_PROGRESS) {
+      // operation (f.e. sign in) is in progress already
+    } else if (error.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE) {
+      // play services not available or outdated
+    } else {
+      // some other error happened
+    }
+    callback({ error })
+  }
+}

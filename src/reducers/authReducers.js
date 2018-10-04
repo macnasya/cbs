@@ -8,22 +8,19 @@ const defaultState = {
 export const user = (state = defaultState, action) => {
   switch (action.type) {
     case actionTypes.SET_PROFILE: return {
-      loggedIn: action.token ? true : false,
+      loggedIn: !!action.profile,
       logginIn: false,
-      token: action.token,
       profile: action.profile
     }
     case actionTypes.LOGGININ: return {...state,
       loggedIn: false,
       logginIn: true,
-      token: null,
-      profile: {}
+      profile: null
     }
     case actionTypes.LOGOUT: return {
       loggedIn: false,
       logginIn: false,
-      token: null,
-      profile: {}
+      profile: null
     }
     default: return state;
   }

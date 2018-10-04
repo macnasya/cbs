@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "302819725979",
+    "firebase_url": "https://cbs-app-8c561.firebaseio.com",
+    "project_id": "cbs-app-8c561",
+    "storage_bucket": "cbs-app-8c561.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:302819725979:android:e2125c85b3eccfcc",
+        "android_client_info": {
+          "package_name": "com.webgears.cbs"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "302819725979-ptjij5q0uulem8io7e16sohijpffqa99.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC9lQM61GkrKG-9LLq8u2BDW-PO-NZLxC0"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

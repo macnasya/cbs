@@ -4,7 +4,7 @@ import { logout } from '../../actions'
 
 class Logout extends React.PureComponent {
   componentDidMount () {
-    this.props.logout(() => this.props.navigation.navigate('AuthLoading'))
+    this.props.logout()
   }
   render () {
     return null

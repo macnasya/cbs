@@ -12,7 +12,7 @@ class UserDashboard extends React.Component {
         <Content>
           <UserHeader {...this.props} title="Dashboard"/>
           <Text>Welcome back,</Text>
-          <Text>{this.props.user.profile.name}</Text>
+          <Text>{this.props.user.profile && this.props.user.profile.displayName}</Text>
         </Content>
       </Container>
     );
