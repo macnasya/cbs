@@ -5,6 +5,7 @@ import AboutScreen from '../components/public/AboutScreen'
 import UserDashboard from '../components/user/UserDashboard'
 import SideBar from '../components/common/SideBar'
 import { AuthLoadingScreen, LoginScreen, Logout } from '../components/auth'
+
 const AuthStack = createStackNavigator(
   {
     Login: LoginScreen
@@ -42,8 +43,9 @@ const UserStack = createDrawerNavigator(
   {
     initialRouteName: 'Dashboard',
     contentComponent: props => <SideBar {...props} />
-  })
-
+  }
+)
+  
 export default navigationRoot = createSwitchNavigator(
   {
     AuthLoading: AuthLoadingScreen,
