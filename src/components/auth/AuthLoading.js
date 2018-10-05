@@ -11,17 +11,11 @@ export class AuthLoadingScreen extends React.Component {
     this._getAuthToken()
   }
 
-  _getAuthToken = async () => {
+  _getAuthToken = () => {
     this.props.checkAuth()
   };
 
   componentDidUpdate () {
-    if(!this.props.user.logginIn){
-      this.props.navigation.navigate(this.props.loggedIn ? 'User' : 'Public')
-    }
-  }
-
-  componentDidMount () {
     if(!this.props.user.logginIn){
       this.props.navigation.navigate(this.props.loggedIn ? 'User' : 'Public')
     }
