@@ -1,8 +1,10 @@
 import React from 'react';
-import styles from '../styles'
 import { connect } from 'react-redux'
-import { login } from '../../actions'
 import { Container, Text, Button, Content, Card, CardItem, Body } from 'native-base';
+import { GoogleSigninButton } from 'react-native-google-signin';
+import { LoginButton, AccessToken } from 'react-native-fbsdk';
+import styles from '../styles'
+import { loginGoogle, loginFB, logout } from '../../actions'
 import AuthHeader from './AuthHeader'
 class LoginScreen extends React.Component {
   constructor (params) {
@@ -12,9 +14,9 @@ class LoginScreen extends React.Component {
     }
   }
 
-  componentDidMount () {
-    this._signInAsync()
-  }
+  // componentDidMount () {
+  //   this._signInAsync()
+  // }
 
   render() {
     return this.state.error ? <Container>
@@ -27,22 +29,48 @@ class LoginScreen extends React.Component {
           <CardItem>
             <Body>
               <Text>There was an error during login process</Text>
-              <Button block onPress={this._signInAsync}><Text>Try again</Text></Button>
+              <Button block onPress={this.setState({error: null})}><Text>Try again</Text></Button>
             </Body>
           </CardItem>
         </Card>
       </Content>
-    </Container> : null
+    </Container> : <Container>
+      <Content>
+        <GoogleSigninButton
+          style={{ width: 48, height: 48 }}
+          size={GoogleSigninButton.Size.Icon}
+          color={GoogleSigninButton.Color.Dark}
+          onPress={this._signInGoogle}
+          disabled={this.state.isSigninInProgress} />
+        <Button onPress={this._signInFB}><Text>Login with Facebook</Text></Button>
+      </Content>
+    </Container>
   }
 
-  _signInAsync = () => {
-    this.props.login((response) => {
+  _signInFB = () => {
+    this.props.loginFB((response) => {
+      console.log('login', response)
+
+      if(response && response.error) {
+        return this.setState({error: response.error, isSigninInProgress: false})
+      }
+      if (!response){
+        this.setState({isSigninInProgress: false});
+      } else {
+        this.props.navigation.navigate('User');
+      }
+    })
+  }
+
+  _signInGoogle = () => {
+    this.setState({isSigninInProgress: true})
+    this.props.loginGoogle((response) => {
       this.setState({error: response.error_description})
       if(!response.error){
         this.props.navigation.navigate('User');
       }
     })
-  };
+  }
 }
 
-export default connect(() => ({}), {login})(LoginScreen)
+export default connect(() => ({}), {loginGoogle, loginFB, logout})(LoginScreen)

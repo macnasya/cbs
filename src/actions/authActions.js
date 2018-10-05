@@ -1,5 +1,6 @@
 import firebase from 'react-native-firebase';
 import { GoogleSignin, GoogleSigninButton, statusCodes } from 'react-native-google-signin';
+import { LoginManager, AccessToken } from 'react-native-fbsdk';
 import { AsyncStorage, Platform } from 'react-native'
 import { actionTypes, API_URL } from './index'
 GoogleSignin.configure();
@@ -27,39 +28,18 @@ export const checkAuth = () => async (dispatch) => {
   firebase.auth().onAuthStateChanged((user) => {
     dispatch(setUserProfile({profile: user}))
   });
-  const isSignedIn = await GoogleSignin.isSignedIn();
-  if( isSignedIn ){
-    try {
-      const userInfo = await GoogleSignin.signInSilently();
-      const credential = firebase.auth.GoogleAuthProvider.credential(userInfo.idToken, userInfo.accessToken);
-        // Login with the credential
-      firebase.auth().signInWithCredential(credential);
-    } catch (error) {
-      if (error.code === statusCodes.SIGN_IN_REQUIRED) {
-        // logout()
-      } else {
-        // some other error
-      }
-    }
-  }
 }
 
-export const logout = (callback = () => {}) => async (dispatch) => {
-  try {
-    // await GoogleSignin.revokeAccess();
-    await GoogleSignin.signOut();
-    firebase.auth().signOut().then(function() {
-      dispatch(setLogout())
-      setTimeout(callback, 10)
-    }).catch(function(error) {
-      console.error(error);
-    });
-  } catch (error) {
-    console.error(error);
-  }
+export const logout = (callback = () => {}) => (dispatch) => {
+  firebase.auth().signOut().then(function() {
+    dispatch(setLogout())
+    setTimeout(callback, 10)
+  }).catch(function(error) {
+    console.error('1', error);
+  });
 }
 
-export const login = (callback) => async (dispatch) => {
+export const loginGoogle = (callback) => async (dispatch) => {
   try {
     await GoogleSignin.hasPlayServices();
     const userInfo = await GoogleSignin.signIn();
@@ -78,4 +58,22 @@ export const login = (callback) => async (dispatch) => {
     }
     callback({ error })
   }
+}
+
+export const loginFB = (callback) => (dispatch) => {
+  LoginManager.logInWithReadPermissions(['public_profile', 'email'])
+    .then((result) => {
+      if (result.isCancelled) {
+        return Promise.reject(new Error('The user cancelled the request'));
+      } else {
+        return AccessToken.getCurrentAccessToken()
+      }
+    })
+    .then(data => {
+      const credential = firebase.auth.FacebookAuthProvider.credential(data.accessToken);
+      // Login with the credential
+      return firebase.auth().signInWithCredential(credential);
+    })
+    .then(response => callback(response))
+    .catch(error => callback({error}));
 }
