@@ -6,6 +6,9 @@ import {
   ListItem,
   Container,
   Left,
+  Card,
+  CardItem,
+  Header
 } from "native-base";
 
 class SideBar extends React.Component {
@@ -15,6 +18,9 @@ class SideBar extends React.Component {
   render() {
     return (
       <Container>
+        <Header>
+          <Text>CBS</Text>
+        </Header>
         <Content
           bounces={false}
           style={{ flex: 1, backgroundColor: "#fff", top: -1 }}
@@ -24,7 +30,7 @@ class SideBar extends React.Component {
             renderRow={data =>
               <ListItem
                 button
-                noBorder
+                // noBorder
                 onPress={() => this.props.navigation.navigate(data.routeName)}
               >
                 <Left>

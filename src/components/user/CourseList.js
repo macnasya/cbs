@@ -67,7 +67,7 @@ class CourseList extends React.Component {
             renderItem={({ item }) => 
               <View style={styles.rowLayout}>
                 <Text>{item.title}</Text>
-                <Button icon transparent danger onPress={() => this.deleteCourse(item.doc.id)}><Icon name="md-remove-circle"/></Button>
+                <Button icon transparent danger onPress={() => this.deleteCourse(item.doc.id)}><Icon name="remove-circle"/></Button>
               </View>
             }
           />
