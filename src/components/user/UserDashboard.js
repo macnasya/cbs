@@ -4,6 +4,7 @@ import { connect } from 'react-redux'
 import { Container, Text, Button, Content } from 'native-base';
 import UserHeader from './UserHeader'
 import { logout } from '../../actions'
+import CoursesList from './CourseList'
 
 class UserDashboard extends React.Component {
 
@@ -15,6 +16,7 @@ class UserDashboard extends React.Component {
           <Text>Welcome back,</Text>
           <Text>{this.props.user.profile && this.props.user.profile.displayName}</Text>
           <Button onPress={() => this.props.navigation.navigate('Logout')}><Text>Logout</Text></Button>
+          <CoursesList />
         </Content>
       </Container>
     );
