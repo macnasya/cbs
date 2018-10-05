@@ -49,8 +49,6 @@ class LoginScreen extends React.Component {
 
   _signInFB = () => {
     this.props.loginFB((response) => {
-      console.log('login', response)
-
       if(response && response.error) {
         return this.setState({error: response.error, isSigninInProgress: false})
       }

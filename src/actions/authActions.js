@@ -35,7 +35,7 @@ export const logout = (callback = () => {}) => (dispatch) => {
     dispatch(setLogout())
     setTimeout(callback, 10)
   }).catch(function(error) {
-    console.error('1', error);
+    console.log(error);
   });
 }
 
