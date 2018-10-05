@@ -11,7 +11,9 @@ target 'cbs' do
   pod 'Firebase/Auth'
   pod 'Firebase/Firestore'
 
-  #pod 'react-native-fbsdk', :path => '../node_modules/react-native-fbsdk'
-  #pod 'FacebookSDK'
+
+  pod 'react-native-fbsdk', :path => '../node_modules/react-native-fbsdk'
+  pod 'React', :path => '../node_modules/react-native'
+  pod 'yoga', :path => '../node_modules/react-native/ReactCommon/yoga'
 
 end
