@@ -35,6 +35,7 @@ class LoginScreen extends React.Component {
         </Card>
       </Content>
     </Container> : <Container>
+      <AuthHeader title="Login" {...this.props} />
       <Content>
         <GoogleSigninButton
           style={{ width: 48, height: 48 }}
@@ -50,7 +51,7 @@ class LoginScreen extends React.Component {
   _signInFB = () => {
     this.props.loginFB((response) => {
       if(response && response.error) {
-        return this.setState({error: response.error, isSigninInProgress: false})
+        return
       }
       if (!response){
         this.setState({isSigninInProgress: false});

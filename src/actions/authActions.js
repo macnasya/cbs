@@ -33,6 +33,7 @@ export const checkAuth = () => async (dispatch) => {
 export const logout = (callback = () => {}) => (dispatch) => {
   firebase.auth().signOut().then(async function() {
     dispatch(setLogout())
+    LoginManager.logOut()
     setTimeout(callback, 10)
     if(await GoogleSignin.isSignedIn()){
       await GoogleSignin.revokeAccess();
