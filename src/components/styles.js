@@ -8,6 +8,5 @@ export default {
   },
   centered: {
     textAlign: 'center'
-  },
-  rowLayout: {flexDirection: "row"}
+  }
 };

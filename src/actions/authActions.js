@@ -50,7 +50,7 @@ export const logout = (callback = () => {}) => async (dispatch) => {
     await GoogleSignin.signOut();
     firebase.auth().signOut().then(function() {
       dispatch(setLogout())
-      setTimeout(callback, 10)
+      callback()
     }).catch(function(error) {
       console.error(error);
     });
