@@ -11,11 +11,8 @@ const  actionTypes = {
   LOGGININ: 'LOGGININ'
 }
 
-const API_URL = 'http://localhost:3456'
-
 export {
   actionTypes,
-  API_URL,
 
   checkAuth,
   logout,

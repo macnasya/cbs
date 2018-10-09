@@ -10,17 +10,17 @@ export const user = (state = defaultState, action) => {
     case actionTypes.SET_PROFILE: return {
       loggedIn: !!action.profile,
       logginIn: false,
-      profile: action.profile
+      profile: action.profile || {}
     }
     case actionTypes.LOGGININ: return {...state,
       loggedIn: false,
       logginIn: true,
-      profile: null
+      profile: {}
     }
     case actionTypes.LOGOUT: return {
       loggedIn: false,
       logginIn: false,
-      profile: null
+      profile: {}
     }
     default: return state;
   }

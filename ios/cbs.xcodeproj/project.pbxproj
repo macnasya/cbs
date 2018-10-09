@@ -62,6 +62,7 @@
 		C156327D21653E1D007C53AE /* GoogleSymbolUtilities.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C156327721653E1D007C53AE /* GoogleSymbolUtilities.framework */; };
 		C156327E21653E1D007C53AE /* GoogleSignIn.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C156327821653E1D007C53AE /* GoogleSignIn.framework */; };
 		C156328021655CFA007C53AE /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = C156327F21655CFA007C53AE /* GoogleService-Info.plist */; };
+		C1A83F8B216D652C00D6F978 /* GoogleSignIn.bundle in Resources */ = {isa = PBXBuildFile; fileRef = C1A83F63216D652700D6F978 /* GoogleSignIn.bundle */; };
 		D595E09F95E5492D8B9CCA50 /* Zocial.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F120D0A31F09493A82C3CE62 /* Zocial.ttf */; };
 		E522837C229C458BA5A3E91F /* Foundation.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 76D5078A500A4962972FC71C /* Foundation.ttf */; };
 		E53CE67291FB4DA2ABD1DE60 /* Feather.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A5400262A16B4F928375CB6A /* Feather.ttf */; };
@@ -414,6 +415,7 @@
 		C156327721653E1D007C53AE /* GoogleSymbolUtilities.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = GoogleSymbolUtilities.framework; sourceTree = "<group>"; };
 		C156327821653E1D007C53AE /* GoogleSignIn.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = GoogleSignIn.framework; sourceTree = "<group>"; };
 		C156327F21655CFA007C53AE /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		C1A83F63216D652700D6F978 /* GoogleSignIn.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = GoogleSignIn.bundle; sourceTree = "<group>"; };
 		CA05DA6C59D24A7C85A98104 /* Octicons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Octicons.ttf; path = "../node_modules/native-base/Fonts/Octicons.ttf"; sourceTree = "<group>"; };
 		CF3362010C0F18D4DD58FD00 /* libPods-cbs.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-cbs.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		DD675B6C9E444DFFBB5D4237 /* EvilIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = EvilIcons.ttf; path = "../node_modules/native-base/Fonts/EvilIcons.ttf"; sourceTree = "<group>"; };
@@ -698,6 +700,7 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
+				C1A83F63216D652700D6F978 /* GoogleSignIn.bundle */,
 				C156327F21655CFA007C53AE /* GoogleService-Info.plist */,
 				13B07FAE1A68108700A75B9A /* cbs */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
@@ -1234,6 +1237,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C1A83F8B216D652C00D6F978 /* GoogleSignIn.bundle in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */,
 				C156328021655CFA007C53AE /* GoogleService-Info.plist in Resources */,

@@ -11,7 +11,7 @@ class CourseList extends React.Component {
   constructor(props){
     super(props)
     this.ref = firebase.firestore().collection('courses')
-      .where('published', '==', true)
+      .where("roles." + firebase.auth().currentUser.uid, "==", 'owner')
     this.unsubscribe = null
     this.state = {
       courses: []
@@ -45,6 +45,24 @@ class CourseList extends React.Component {
    })
   }
 
+  addCourse = () => {
+    this.ref.add({
+      title: this.state.newCourse,
+      description: 'Description',
+      published: true,
+      roles: {
+        [firebase.auth().currentUser.uid]: 'owner'
+      }
+    });
+    this.setState({ 
+      newCourse: '',
+    })
+  }
+
+  deleteCourse = (id) => {
+    this.ref.doc(id).delete()
+  }
+
   render() {
     return (
       <View>
@@ -54,9 +72,17 @@ class CourseList extends React.Component {
             renderItem={({ item }) => 
               <View style={styles.rowLayout}>
                 <Text>{item.title}</Text>
+                <Button icon transparent danger onPress={() => this.deleteCourse(item.doc.id)}><Icon name="remove-circle"/></Button>
               </View>
             }
           />
+          <TextInput
+            style={{height: 40, borderColor: 'gray', borderWidth: 1}}
+            onChangeText={(newCourse) => this.setState({newCourse})}
+            value={this.state.newCourse}
+            placeholder="Enter course name"
+          />
+          <Button onPress={this.addCourse}><Text>Add</Text></Button>
       </View>
     );
   }

@@ -26,8 +26,11 @@ class LoginScreen extends React.Component {
           </CardItem>
           <CardItem>
             <Body>
-              <Text>There was an error during login process</Text>
-              <Text>{this.state.errorMessage || ''}</Text>
+              <Text>{this.state.errorMessage || 'There was an error during login process'}</Text>
+            </Body>
+          </CardItem>
+          <CardItem footer>
+            <Body>
               <Button block onPress={() => this.setState({error: null, isSigninInProgress: false})}><Text>Try again</Text></Button>
             </Body>
           </CardItem>
@@ -59,14 +62,11 @@ class LoginScreen extends React.Component {
 
   _signInCallback = (response) => {
     if(response && response.error) {
-      console.log(response.error)
       return this.setState({ error: response.error,
-      errorMessage: response.error.code === 'auth/account-exists-with-different-credential' ?
-        'An account already exists with the same email address but different sign-in credentials. Sign in using a provider associated with this email address.' :
-        '' })
+      errorMessage: response.error.message })
     }
     if(response && !response.error){
-      this.props.navigation.navigate('User');
+      this.props.navigation.navigate('AuthLoading');
     } else {
       this.setState({isSigninInProgress: false})
     }
