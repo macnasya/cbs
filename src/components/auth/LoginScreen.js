@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux'
 import { Container, Text, Button, Content, Card, CardItem, Body } from 'native-base';
 import { GoogleSigninButton } from 'react-native-google-signin';
-import { LoginButton, AccessToken } from 'react-native-fbsdk';
+import { View } from 'react-native';
 import styles from '../styles'
 import { loginGoogle, loginFB, logout } from '../../actions'
 import AuthHeader from './AuthHeader'
@@ -10,18 +10,16 @@ class LoginScreen extends React.Component {
   constructor (params) {
     super(params)
     this.state = {
-      error: null
+      error: null,
+      errorMessage: ''
     }
   }
 
-  // componentDidMount () {
-  //   this._signInAsync()
-  // }
-
   render() {
-    return this.state.error ? <Container>
+    return <Container>
       <AuthHeader title="Login" {...this.props} />
       <Content>
+      {this.state.error ?
         <Card transparent>
           <CardItem header>
             <Text style={styles.centered}>Login error</Text>
@@ -29,47 +27,50 @@ class LoginScreen extends React.Component {
           <CardItem>
             <Body>
               <Text>There was an error during login process</Text>
-              <Button block onPress={this.setState({error: null})}><Text>Try again</Text></Button>
+              <Text>{this.state.errorMessage || ''}</Text>
+              <Button block onPress={() => this.setState({error: null, isSigninInProgress: false})}><Text>Try again</Text></Button>
             </Body>
           </CardItem>
         </Card>
-      </Content>
-    </Container> : <Container>
-      <AuthHeader title="Login" {...this.props} />
-      <Content>
-        <GoogleSigninButton
-          style={{ width: 48, height: 48 }}
-          size={GoogleSigninButton.Size.Icon}
-          color={GoogleSigninButton.Color.Dark}
-          onPress={this._signInGoogle}
-          disabled={this.state.isSigninInProgress} />
-        <Button onPress={this._signInFB}><Text>Login with Facebook</Text></Button>
+      :
+        <View>
+          <GoogleSigninButton
+            style={{ width: 48, height: 48 }}
+            size={GoogleSigninButton.Size.Icon}
+            color={GoogleSigninButton.Color.Dark}
+            onPress={this._signInGoogle}
+            disabled={this.state.isSigninInProgress} />
+          <Button onPress={this._signInFB} disabled={this.state.isSigninInProgress}><Text>Login with Facebook</Text></Button>
+        </View>
+      }  
       </Content>
     </Container>
   }
 
   _signInFB = () => {
-    this.props.loginFB((response) => {
-      if(response && response.error) {
-        return
-      }
-      if (!response){
-        this.setState({isSigninInProgress: false});
-      } else {
-        this.props.navigation.navigate('User');
-      }
-    })
+    this.setState({isSigninInProgress: true})
+    this.props.loginFB(this._signInCallback)
   }
 
   _signInGoogle = () => {
     this.setState({isSigninInProgress: true})
-    this.props.loginGoogle((response) => {
-      this.setState({error: response.error_description})
-      if(!response.error){
-        this.props.navigation.navigate('User');
-      }
-    })
+    this.props.loginGoogle(this._signInCallback)
+  }
+
+  _signInCallback = (response) => {
+    if(response && response.error) {
+      console.log(response.error)
+      return this.setState({ error: response.error,
+      errorMessage: response.error.code === 'auth/account-exists-with-different-credential' ?
+        'An account already exists with the same email address but different sign-in credentials. Sign in using a provider associated with this email address.' :
+        '' })
+    }
+    if(response && !response.error){
+      this.props.navigation.navigate('User');
+    } else {
+      this.setState({isSigninInProgress: false})
+    }
   }
 }
 
-export default connect(() => ({}), {loginGoogle, loginFB, logout})(LoginScreen)
+export default connect(({loginError}) => ({loginError}), {loginGoogle, loginFB, logout})(LoginScreen)
